@@ -15,7 +15,7 @@ int main()
 	//vector<int> inttest{1,2,3}; //初始化为1,2,3
 	vector<int> inttest(10);//初始化为10个0
 	//vector<int> inttest(10,1);//初始化为10个0
-	//vector<int> inttest=(10，1);//错误，没有这个写法
+	//vector<int> inttest=(10,1);//错误，没有这个写法
 	#if 0
 	string word;
 	vector<string> vs;
