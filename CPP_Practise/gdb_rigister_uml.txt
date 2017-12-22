@@ -1,0 +1,63 @@
+/********************gdb********************/
+g++ -g *.cpp -o test
+g++ -g newdelete.cpp -Wl,-Map,mapfile -o test 生成map文件
+gdb *.exe
+b fucntion or line
+l list code
+bt backtrace / i stack / i s
+n next
+r run
+s stepinto
+focus -> ctrl + x + a 退出
+disassemble
+x /30xw address
+i proc mapping / i proc m
+i files / i target
+i frame
+i locals
+i thread
+i registers / i r
+
+/*******************gdb*********************/
+
+
+/***************x86-64 registers****************/
+rax            0x208020 2129952													累加和结果寄存器 or 函数返回值使用?
+rbx            0x21ac70 2206832													数据指针寄存器
+rcx            0xffffffff       4294967295							循环计数器
+rdx            0x0      0		 														i/o指针
+rsi            0x0      0																源地址寄存器
+rdi            0x33b578f040     222087934016						目的地址寄存器		
+rbp            0x7fffffffc860   0x7fffffffc860					栈指针寄存器
+rsp            0x7fffffffc760   0x7fffffffc760					堆栈指针
+r8             0x7ffff7a3f720   140737348106016
+r9             0x7ffff7a3f720   140737348106016
+r10            0x7fffffffc4e0   140737488340192
+r11            0x246    582
+r12            0x1      1
+r13            0x7fffffffc940   140737488341312
+r14            0x0      0
+r15            0x0      0
+rip            0x2033ca 0x2033ca <main()+323> 				标志当前进程将要执行指令位置
+eflags         0x213    [ CF AF IF ]									状态和控制寄存器 
+cs             0x33     51														代码段寄存器
+ss             0x2b     43														堆栈段寄存器
+ds             0x0      0															数据段寄存器
+es             0x0      0															数据段寄存器
+fs             0x0      0															数据段寄存器
+gs             0x0      0															数据段寄存器
+
+%rax 作为函数返回值使用。
+%rsp 栈指针寄存器，指向栈顶
+%rdi，%rsi，%rdx，%rcx，%r8，%r9 用作函数参数，依次对应第1参数，第2参数。。。
+%rbx，%rbp，%r12，%r13，%14，%15 用作数据存储，遵循被调用者使用规则，简单说就是随便用，调用子函数之前要备份它，以防他被修改
+%r10，%r11 用作数据存储，遵循调用者使用规则，简单说就是使用之前要先保存原值
+
+/***************x86-64 registers****************/
+
+/***************UML****************/
+空心三角形： 继承关系 	老师/学生 和人的关系
+虚线箭头：   依赖关系 	司机-->汽车
+实心菱形：   组合关系 	头和嘴的关系， 头必须包含嘴
+空心菱形：   聚合关系		发动机和汽车， 发动机可以独立于汽车存在
+/***************UML****************/
