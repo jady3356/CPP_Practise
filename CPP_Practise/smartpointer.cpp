@@ -8,10 +8,16 @@ using namespace std;
 智能指针也是模板
 对象是电视机，智能ptr是观众
 shared_ptr: 可以多个观众共享，没有人看（引用）的时候自动释放。电视归大家所有，没有人看电视的时候就会关掉电视。
+		    需要注意的问题： 
+		  （1）循环引用导致内存泄露；
+		  （2）多线程写
 unique_ptr: 只能一个观众独享，其他人都没有权利看。release和reset用法
 weak_ptr：不能控制所指对象的生存周期的智能指针，它指向shared_ptr管理的对象。不改变use_count，是在weak_count为0或者超期后释放。
-		  主要应用场景是，在使用shared_ptr指向的对象前检查是否还存在。还有一个用途是解决了多个对象内部含有shared_ptr循环指向，导致对象无法释放的问题
+		  主要应用场景是，在使用shared_ptr指向的对象前检查是否还存在,通过lock()来获取被shared_ptr的地址。还有一个用途是解决了多个对象内部含有shared_ptr循环指向，导致对象无法释放的问题
+
 make_shared:
+make_unique:
+scoped_ptr:
 auto_ptr： (1) 不需要显示的取delete，出栈后自动释放.已经被废弃！！！用unique_ptr替代;
 		   (2) 在赋值和作为函数入参时都会丢失所有权
 		   (3) 不能让两个auto_ptr指向同一个对象，这样会导致2个auto_ptr共享所有权
