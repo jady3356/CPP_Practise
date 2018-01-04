@@ -6,7 +6,9 @@ using namespace std;
 面向对象（OOP）：
 	1）数据抽象 ：类的接口与实现分离
 	2）继承 ：定义相似的类并对其相似关系建模
-	3）动态绑定(virtual)：在一定程度上忽略相似类型的区别，而以统一的方式使用它们的的对象
+	3）动态绑定：在一定程度上忽略相似类型的区别，而以统一的方式使用它们的的对象
+
+			虚函数：
 		    派生类向基类的类型转换： 只能将派生类转化成基类，因为这样基类不可能访问派生类成员，反之不行；
 		    					   派生类到基类的转化只能是引用或者指针时才可以。
 		    派生类与静态成员:派生类不能访问基类的private成员，只能访问public和protected
@@ -14,6 +16,7 @@ using namespace std;
  
 		    overload(重载)：用于同一个类中，参数和返回值都可以重载，但是参数相同且返回值不同的重载是不允许的；相当于函数名称不变单改变了接口
 		    override(覆盖)：在子类中，不改变函数参数和返回值，但是改写行为；也是一种多态表现.
+		    hide: 在派生类中定义与基类重名的函数。派生类中的重名函数并不会重载基类的函数，只要名字一样就会隐藏，形参列表不一致仍被隐藏
 
 		    虚函数：
 					（1）派生类中虚函数的参数和返回值必须和基类一模一样，可以用override关键字让编译器检查这种保证
@@ -43,8 +46,8 @@ public:
     
     //void baseFunc(int i) { cout << "B::baseFunc(int i), override  "  << endl;} //这是一个新的函数跟虚函数baseFunc()没有关系
     //绝对不要重新定义继承而来的非虚(non-virtual)函数,下面只是示例
-    void baseFuncA(int a) {cout << "B::baseFuncA(int a), a = " << a << endl;}//覆盖A中的baseFuncA(int)，且是静态的
-    void baseFuncA(char a) {cout << "B::baseFuncA(char a), a = " << a << endl;}//A中同名函数没有这个类型的入参，所以这是一个新的函数
+    void baseFuncA(int a) {cout << "B::baseFuncA(int a), a = " << a << endl;}//覆盖A中的baseFuncA(int)，且是静态的；隐藏A中的baseFuncA(int)和baseFuncA(int a, char c)
+    void baseFuncA(char a) {cout << "B::baseFuncA(char a), a = " << a << endl;}//A中同名函数没有这个类型的入参，所以这是一个新的函数；隐藏A中的baseFuncA(int)和baseFuncA(int a, char c)
 };
 
 
@@ -70,11 +73,11 @@ int main() {
 	testA.baseFuncA(5,'a');
 
 	testB.baseFunc();
-	testB.baseFuncA(6);//这里仍然直接调用baseFuncA(char a)，不会调用基类的baseFuncA(int a) 
+	testB.baseFuncA(6);//这里仍然直接调用baseFuncA(char a)，不会调用基类的baseFuncA(int a) ，A中的被隐藏
 	testB.baseFuncA('b');
 	//testB.baseFuncA(7，'c'); 这里会报错，B的对象并不能直接访问A的成员函数？
 
-	A *ca = &testB;
+	A *ca = &testB;//将派生类转化成基类
 	ca->baseFuncA(7,'c');
 	ca->print();
 }
