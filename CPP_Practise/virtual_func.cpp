@@ -75,9 +75,17 @@ int main() {
 	testB.baseFunc();
 	testB.baseFuncA(6);//这里仍然直接调用baseFuncA(char a)，不会调用基类的baseFuncA(int a) ，A中的被隐藏
 	testB.baseFuncA('b');
-	//testB.baseFuncA(7，'c'); 这里会报错，B的对象并不能直接访问A的成员函数？
+	//testB.baseFuncA(7，'c'); 这里会报错，B的对象并不能直接访问A的成员函数？因为baseFuncA被覆盖了，在B中就没有 baseFuncA(int a, char c)
 
 	A *ca = &testB;//将派生类转化成基类
 	ca->baseFuncA(7,'c');
 	ca->print();
+
+	B *ptr = (B *)&testA;//用（B*）将基类A的对象testA强转为B类型
+	ptr->baseFunc();//此时调用A类型的虚函数，因为testA的地址不变,虚函数的地址也不变
+	ptr->baseFuncA(8);//调用B的baseFuncA(int),因B中将baseFuncA覆盖了
+	ptr->baseFuncA('d');//调用B的baseFuncA(char)
+	//ptr->baseFuncA(8,'c');//这里会报错，B的对象并不能直接访问A的成员函数？因为baseFuncA被覆盖了，在B中就没有 baseFuncA(int a, char c)
+
+	ptr->print();
 }
