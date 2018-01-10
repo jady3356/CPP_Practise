@@ -28,7 +28,7 @@ text: 代码段
 */
 
 class A {
-	int i;//4bytes,对其8bytes
+	int i;//4bytes,对齐8bytes
 	double j;//8bytes
 public:
 	A() {i = 1;j=0.1;}
@@ -49,10 +49,15 @@ void testFunc(A& a) {
 	a.virtualFunc();
 }
 
+
+class NULLclass {
+
+};
+
 int main() {
 	A ta;
 	B tb;
-
+	NULLclass nc;
 	testFunc(ta);
 	testFunc(tb);
 }

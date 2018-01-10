@@ -17,7 +17,7 @@ weak_ptr：不能控制所指对象的生存周期的智能指针，它指向sha
 
 make_shared:
 make_unique:
-scoped_ptr:
+scoped_ptr:与auto_ptr类似，但是scoped_ptr把拷贝构造函数和赋值函数都声明为私有的，拒绝了指针所有权的转让，只有scoped_ptr自己能够管理指针，其他任何人都无权访问被管理的指针，从而保证了指针的绝对安全。 
 auto_ptr： (1) 不需要显示的取delete，出栈后自动释放.已经被废弃！！！用unique_ptr替代;
 		   (2) 在赋值和作为函数入参时都会丢失所有权
 		   (3) 不能让两个auto_ptr指向同一个对象，这样会导致2个auto_ptr共享所有权
@@ -55,10 +55,10 @@ int main() {
 		cout << "*r = " << *r << ", r add = "<< r << ", r use_count: " << r.use_count() << endl;
 		auto q(p);// p.use_count = 3
 		cout << "*q = " << *q << ", q add = "<< q << ", p use_count: " << p.use_count() << endl;
-		r = q; //r被释放，因为r原来指向的对象没有人引用了，r.use_count为0
+		r = q; //指针r存储的对象的内存被释放，因为r原来指向的对象没有人用了，r.use_count为0
 		cout << "p use_count: " << p.use_count() << endl;
 
-		shared_ptr<string> x = make_shared<string> (8, 'C');//x的地址为原来r的地址，因为r的地址已经释放了，可重用了
+		shared_ptr<string> x = make_shared<string> (8, 'C');//x指向的对象的地址为原来r中对象的地址，因为r的地址已经释放了，可重用了
 		cout << "*x = " << *x << ", x add = "<< x << " ,x use_count: " << x.use_count() <<", p use_count = " << p.use_count() << endl;
 		p = x;//x的引用+1， x.use_count = 2, p的引用-1
 		cout << "*x = " << *x << ", x add = "<< x << " ,x use_count: " << x.use_count() << endl;
@@ -85,11 +85,11 @@ int main() {
 	cout << "a2 add= "<<a2 << ", sp2 use_count: " << sp2.use_count() << endl;
 	a2 = NULL;
 	cout <<"sp2 add= " << sp2 << ", sp2 use_count: " << sp2.use_count() << endl;
-	//delete sp2;//报错，不能释放智能指针？
+	//delete sp2;//报错，不能释放智能指针？因为sp2是一个指向智能指针的栈内存地址，它并不是一个普通的new出来的堆的ptr
 
     weak_ptr<A> wp(sp2);// wp并不能直接访问shared_ptr里面的对象
     cout << "sp2 use count= " << sp2.use_count() << endl;// sp2的use count为1， weak 为1
-    if(shared_ptr<A> np = wp.lock()) // 通过lock连来检查shared_ptr是否还存在，如果expire为TRUE则返回，空的shared_ptr；如果为FALSE则返回shared_ptr
+    if(shared_ptr<A> np = wp.lock()) // 通过lock连来检查shared_ptr是否还存在，如果expired()为TRUE则返回，空的shared_ptr；如果为FALSE则返回shared_ptr
     	cout << "sp2 add=" << sp2 << ", sp2 use count= " << sp2.use_count() <<", np add: " << np << ", wp lock = " << wp.lock() << endl;
     	//这个时候use count临时为2和weak=1？因为被np用了？
     //np->print();np已经out of scope了！！！if后面有大括号。。。

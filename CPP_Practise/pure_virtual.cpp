@@ -2,29 +2,6 @@
 using namespace std;
 
 /* 
-********************OOP的一些基础知识 start***************************
-protected 和 friend： 
-	（1） 派生类的成员或者友元只能通过派生类的对象访问基类的protected成员。
-	（2） 派生类对基类的protected成员没有访问权限
-
-	派生类成员不能访问基类的private成员
-	派生类访问说明符： 控制派生类用户对基类成员的访问权限
-					 对派生类成员访问基类成员的控制没有影响
-
-    类的设计：
-    	接口：定义为public
-    	供派生类使用：protected
-    	供基类和基类友元访问： private
-
-    友元与继承：
-        友元关系不能继承
-
-    派生类中的using:
-        public: 类的所有用户都能访问
-        private: 类的成员和友元访问
-        protected： 成员，友元和派生类访问
-********************OOP的一些基础知识 end***************************
-
 ******************** 纯虚函数 start*****************************************************************
 	慨念：
     所以类纯虚函数的声明就是在告诉子类的设计者，“你必须提供一个纯虚函数的实现，但我不知道你会怎样实现它”。
@@ -68,6 +45,45 @@ void animalsMoving(animals &a)
 	a.move();
 }
 
+class test{
+public:
+   virtual void print();
+   virtual void order()=0;
+   int array[20];
+};
+
+//void test::order(){
+//   cout << "default order " << endl;
+//}
+
+void test::print(){
+   order();
+   cout << "test:print(): " << endl;
+   //for(int i=0; i<20; i++)
+           //cout <<  array[i] << endl;
+}
+
+class ta : public test {
+public:
+	void order() {cout << "ta:order" << endl;}
+	//void print() {
+    	//order();
+    	//cout << "ta:print(): " << endl;
+    	//for(int i=0; i<20; i++)
+           //cout <<  array[i] << endl;
+	//}
+};
+
+class tb : public ta {
+//public:
+	void order() {cout << "tb:order" << endl;}
+};
+
+class tc : public tb {
+	void order() {cout << "tc:order" << endl;}
+};
+
+
 int main() {
 	dogs d;
 	fishes f;
@@ -76,4 +92,12 @@ int main() {
 	animalsMoving(d);
 	animalsMoving(f);
 	animalsMoving(b);
+
+	ta tao;
+	tb tbo;
+	tc tco;
+
+	tao.print();
+	tbo.print();
+	tco.print();
 }
